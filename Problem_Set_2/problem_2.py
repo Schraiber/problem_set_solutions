@@ -4,7 +4,7 @@ def parse_fasta(fastaFile):
 	for line in fastaFile:
 		if line[0] == ">":
 			#if the first charaacter is >, then we know it's a sequence name
-			contigName = line.strip()
+			contigName = line.strip()[1:]
 		else:
 			#otherwise it's the sequence, so we want to assign it to that entry in the dictionary
 			contigSequence = line.strip()
