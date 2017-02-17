@@ -72,7 +72,7 @@ myOutput = open("string_matching_mapping.txt","w")
 
 whichRead = 0
 while True:
-	if whichRead % 10000 == 0: print whichRead
+	if whichRead % 500 == 0: print whichRead
 	whichRead += 1
 	#read an entry the normal way
 	name = myFastq.readline().strip()
@@ -90,7 +90,7 @@ while True:
 			#we can break because we don't need to search any more
 			break 
 		#then search reverse
-		mapping = naiveStringSearch(seq,myGenomeDict[chrom])
+		mapping = naiveStringSearch(seq,myGenomeComplementDict[chrom])
 		if mapping is not None:
 			#this means we found it!
 			myOutput.write("%s\t%d\t-\t%s\n"%(chrom,mapping,name))
