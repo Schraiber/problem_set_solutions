@@ -60,20 +60,30 @@ for pileupcolumn in bamFile.pileup():
 		if pileupread.is_del or pileupread.is_refskip: continue
 		#get the nucleotide from that read
 		read = pileupread.alignment.query_sequence[pileupread.query_position]
+		#if it's not the reference allele, need to add to dictionary or incrememnt
 		if read != ref_allele:
 			if read in alt_alleles:
+				#if it's in the dictionary, increment
 				alt_alleles[read] += 1
 			else:
-				alt_alleles[read] = 0
+				#if it's not, add one
+				alt_alleles[read] = 1
 		else:
+			#the allele is ref, so count it as one more time seeing ref
 			ref_num += 1
+	#go through and get the alternate allele that's seen the most times
+	#before I've seen any, I've seen it zero times
 	alt_num = 0
+	#before I've seen anything, I don't have an alternative allele
 	alt_allele = ""
+	#loop over all the possible alternative alleles
 	for allele in alt_alleles:
 		if alt_alleles[allele] > alt_num:
+			#if I've seen this allele more than any other, this is my alternative allele
 			alt_num = alt_alleles[allele]
 			alt_allele = allele
 	if alt_num > 0:
+		#if there are more 0 alternative reads, then this is a potentially variable site, so compute GLs and print
 		GLref, GLalt = compute_genotype_likelihood(ref_num,alt_num)
 		outFile.write("%s\t%d\t%s\t%s\t%f\t%f\n"%(chrom,pos,ref_allele,alt_allele,GLref,GLalt))
 	
